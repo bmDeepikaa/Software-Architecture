@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Assignment 1: Question 1</title>
+    </head>
+    <body>
+        <h1>Please fill up the form :</h1>
+        <form method="GET" action="http://www.it.murdoch.edu.au/cgi-bin/reply1.pl" >
+            <p>Name: <input name="name" type="text" size="20" required></p>
+            <p>Phone Number: <input name="phone" type="text" size="10" value="+65" placeholder="+65" onchange="isNumberPhone(this)" required></p>
+            <p>Date of Birth (dd/mm/yyyy): <input name="dob" type="text" size="10" placeholder="dd/mm/yyyy" onchange="isValidDate(this)" required></p>
+            <div>Favourite Pastime: 
+                <select name="FavouritePastime">
+                    <option>Surfing the Web</option>
+                    <option>Playing Sport</option>
+                    <option>Listening to Music</option>
+                    <option>Watching TV</option>
+                    <option>Playing Games</option>
+                    <option>Community Service</option>
+                    <option>Daydreaming</option>
+                    <option>Reading</option>
+                    <option>Meditation</option>
+                </select>
+            </div>    
+            <br>
+            <div>
+                <button type="button" onclick="validateForm()">SUBMIT</button>
+            </div>
+        </form>
+
+        <script>
+            // need add the check if current date or future
+
+
+            // Validate the name
+            function validate(form) {
+                if (!isNotEmpty(form.name)) {
+                    return false;
+                }
+                if (!isName(form.name)) {
+                    return false;
+                }
+                
+                if(!validatePhoneNumber(form.phone))
+                {
+                   return false; 
+                }
+
+
+                // Validate date
+                var date = form.dob;
+                if (!isValidDate(date)) {
+                    alert("Please enter a valid date in the format dd/mm/yyyy.");
+                    date.focus();
+                    date.select();
+                    return false;
+                }
+                return true;
+            }
+            // Check if a string contains numerical values
+            function containsNumbers(inputStr) {
+                return /\d/.test(inputStr);
+            }
+            // Check if a field is not empty
+            function isNotEmpty(field) {
+                var inputStr = field.value.trim();
+                if (inputStr === "") {
+                    alert("This field requires an entry.");
+                    field.focus();
+                    field.select();
+                    return false;
+                }
+                return true;
+            }
+
+            function isName(field) {
+                var inputStr = field.value.trim();
+
+                if (containsNumbers(inputStr)) {
+                    alert("name cannot contain numerical values.");
+                    field.focus();
+                    field.select();
+                    return false;
+
+                }
+                return true;
+            }
+            // Validate phone number
+        function validatePhoneNumber(field) {
+            var inputStr = field.value.trim();
+            var validPrefix = "+65";
+
+            if (!inputStr.startsWith(validPrefix)) {
+                alert("Phone number must start with the valid prefix: " + validPrefix);
+                field.focus();
+                field.select();
+                return false;
+            }
+
+            if (!containsNumbers(inputStr)) {
+                alert("Phone number must contain numerical values.");
+                field.focus();
+                field.select();
+                return false;
+            }
+
+            return true;
+        }
+
+            // Validate date format (dd/mm/yyyy)
+             function isValidDate(field) {
+            var dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+            if (!dateRegex.test(field.value.trim())) {
+                alert("Please enter a valid date in the format dd/mm/yyyy.");
+                field.focus();
+                field.select();
+                return false;
+            }
+
+            var parts = field.value.trim().split('/');
+            var day = parseInt(parts[0], 10);
+            var month = parseInt(parts[1], 10);
+            var year = parseInt(parts[2], 10);
+
+            if (isNaN(day) || isNaN(month) || isNaN(year)) {
+                alert("Please enter numeric values for day, month, and year.");
+                field.focus();
+                field.select();
+                return false;
+            }
+
+            // Validate day, month, and year ranges as per your requirements
+            if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1900 || year > 2100) {
+                alert("Please enter a valid day, month, and year.");
+                field.focus();
+                field.select();
+                return false;
+            }
+
+            return true;
+        }
+
+            // Validate the form
+            function validateForm() {
+                var form = document.querySelector('form');
+                if (validate(form)) {
+                    form.submit();
+                }
+            }
+        </script>
+    </body>
+</html>
